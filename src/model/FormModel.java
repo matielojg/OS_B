@@ -41,6 +41,9 @@ public class FormModel implements EntidadeBase {
 	@Column
 	private Timestamp dateclose;
 
+	@Column
+	private String foto;
+
 	@JsonIgnoreProperties("responsible")
 	@ManyToOne
 	@JoinColumn(name = "responsible", nullable = true)
@@ -182,6 +185,14 @@ public class FormModel implements EntidadeBase {
 
 	public void setDateclose(Timestamp dateclose) {
 		this.dateclose = dateclose;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
 
 }

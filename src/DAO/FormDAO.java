@@ -60,23 +60,54 @@ public class FormDAO extends DAO {
 		return query.getResultList();
 	}
 
-	public List<FormModel> listPaginadoPorStatusEUsuario(long statusid,long statusid1, long usuarioid, int pagina,
+	public List<FormModel> listPaginadoPor2StatusEUsuario(long statusid,long statusid1, long usuarioid, int pagina,
 			int limitePorPagina) {
 		manager.clear(); // limpeza de cache de queries
 		Query query = manager
-				.createQuery("Select f from FormModel f WHERE f.status = :status OR f.status= :status1 AND f.userResponsible = :usuario");
+				.createQuery("Select f from FormModel f WHERE f.userResponsible = :usuario AND (f.status = :status OR f.status= :status1)");
 		StatusOSModel status = new StatusOSModel();
-		StatusOSModel status1 = new StatusOSModel();
 		status.setId(statusid);
+		StatusOSModel status1 = new StatusOSModel();
 		status1.setId(statusid1);
-		UserModel usuario = new UserModel();
-		usuario.setId(usuarioid);
 		query.setParameter("status", status);
 		query.setParameter("status1", status1);
+		UserModel usuario = new UserModel();
+		usuario.setId(usuarioid);
 		query.setParameter("usuario", usuario);
 		query.setMaxResults(limitePorPagina);
 		query.setFirstResult(pagina * limitePorPagina - limitePorPagina);
 		return query.getResultList();
 	}
 
+	public List<FormModel> listPaginadoPorStatusEUsuario(long statusid, long usuarioid, int pagina,
+			int limitePorPagina) {
+		manager.clear(); // limpeza de cache de queries
+		Query query = manager
+				.createQuery("Select f from FormModel f WHERE f.userResponsible = :usuario AND f.status = :status");
+		StatusOSModel status = new StatusOSModel();
+		status.setId(statusid);
+		query.setParameter("status", status);
+		UserModel usuario = new UserModel();
+		usuario.setId(usuarioid);
+		query.setParameter("usuario", usuario);
+		query.setMaxResults(limitePorPagina);
+		query.setFirstResult(pagina * limitePorPagina - limitePorPagina);
+		return query.getResultList();
+	}
+
+	public List<FormModel> listPaginadoPorStatusSupervisor(long statusid,long statusid1, int pagina,
+			int limitePorPagina) {
+		manager.clear(); // limpeza de cache de queries
+		Query query = manager
+				.createQuery("Select f from FormModel f WHERE f.status = :status OR f.status= :status1");
+		StatusOSModel status = new StatusOSModel();
+		status.setId(statusid);
+		StatusOSModel status1 = new StatusOSModel();
+		status1.setId(statusid1);
+		query.setParameter("status", status);
+		query.setParameter("status1", status1);
+		query.setMaxResults(limitePorPagina);
+		query.setFirstResult(pagina * limitePorPagina - limitePorPagina);
+		return query.getResultList();
+	}
 }

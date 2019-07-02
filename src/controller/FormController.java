@@ -51,11 +51,36 @@ public class FormController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<FormModel> listarPorStatusEUsuario(
 			@QueryParam("statusid") long statusid,
+			@QueryParam("usuarioid") long usuarioid,
+			@QueryParam("pagina") int pagina, 
+			@QueryParam("limitePorPagina") int limitePorPagina) {
+		List<FormModel> lista = dao.listPaginadoPorStatusEUsuario(statusid, usuarioid, pagina,
+				limitePorPagina);
+		return lista;
+	}
+	
+	@GET
+	@Path("listarPor2StatusEUsuario")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<FormModel> listarPor2StatusEUsuario(
+			@QueryParam("statusid") long statusid,
 			@QueryParam("statusid1") long statusid1, 
 			@QueryParam("usuarioid") long usuarioid,
 			@QueryParam("pagina") int pagina, 
 			@QueryParam("limitePorPagina") int limitePorPagina) {
-		List<FormModel> lista = dao.listPaginadoPorStatusEUsuario(statusid, statusid1, usuarioid, pagina,
+		List<FormModel> lista = dao.listPaginadoPor2StatusEUsuario(statusid, statusid1, usuarioid, pagina,
+				limitePorPagina);
+		return lista;
+	}
+	@GET
+	@Path("listarPorStatusPendenteSupenso")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<FormModel> listarPorStatusPendenteSupenso(
+			@QueryParam("statusid") long statusid,
+			@QueryParam("statusid1") long statusid1, 
+			@QueryParam("pagina") int pagina, 
+			@QueryParam("limitePorPagina") int limitePorPagina) {
+		List<FormModel> lista = dao.listPaginadoPorStatusSupervisor(statusid, statusid1, pagina,
 				limitePorPagina);
 		return lista;
 	}
@@ -112,7 +137,7 @@ public class FormController {
 			else
 				formAtual.setDateclose(null);
 		}
-
+		
 		else {
 			System.out.println("entrou no B - atual" + formAtual.getStatus().getId() + " antigo - "
 					+ formAntesDeSalvar.getStatus().getId());
@@ -124,6 +149,10 @@ public class FormController {
 				formAtual.setDateclose(null);
 		}
 
+		
+		
+		
+		
 		/*
 		 * AQUI TÁ CRIANDO UM OBJETO DE AÇÃO REFERENTE A UMA ALTERAÇÃO DE OS. PRA CADA
 		 * ALTERAÇÃO, UM OBJETO DE AÇÃO SERÁ SALVO, CONTENDO DATA E HORA ATUAL +

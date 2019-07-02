@@ -1,10 +1,7 @@
 package DAO;
 
 import java.util.List;
-
 import javax.persistence.Query;
-
-import model.FormModel;
 import model.FunctionModel;
 import model.UserModel;
 
@@ -21,20 +18,35 @@ public class UserDAO extends DAO {
 		return query.getResultList();
 	}
 
-	public List<UserModel> listPaginadoPorFunctionEUsuario(long functionid, long usuarioid, int pagina, int limitePorPagina) {
+	public List<UserModel> listUserFunction(long id) {
 		manager.clear(); // limpeza de cache de queries
 		Query query = manager
-				.createQuery("Select f from FormModel f WHERE f.status = :status OR f.status= :status1 AND f.userResponsible = :usuario");
-		FunctionModel function = new FunctionModel();
-		function.setId(functionid);
-		UserModel usuario = new UserModel();
-		usuario.setId(usuarioid);
-		query.setParameter("function", functionid);
-		query.setParameter("usuario", usuario);
-		query.setMaxResults(limitePorPagina);
-		query.setFirstResult(pagina * limitePorPagina - limitePorPagina);
+				.createQuery("Select f from UserModel f WHERE f.function = :idtecnico ");
+		FunctionModel idtecnico = new FunctionModel();
+		idtecnico.setId(id);
+		query.setParameter("idtecnico", idtecnico);
 		return query.getResultList();
 	}
 	
-	
+	public UserModel findById(long id) {
+		Object retorno = null;
+		try {
+			manager.clear(); // limpeza de cache de queries
+			Query query = manager.createQuery("Select c from UserModel c WHERE c.id = :id");
+			query.setParameter("id", id);
+			query.setMaxResults(1);
+			retorno = query.getSingleResult();
+			if (retorno != null) {
+				return (UserModel) retorno; 
+				}
+			else 
+				return null;
+			
+			
+
+		} catch (Exception ex) {
+			return null;
+		}
+	}
+
 }

@@ -48,6 +48,7 @@ public class UserModel implements EntidadeBase {
 
 	@Column
 	private String contact;
+	
 
 	@JsonIgnoreProperties("user") // quando é RESTFul precisa desta annotation
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -183,4 +184,6 @@ public class UserModel implements EntidadeBase {
 	public void setFoto(String foto) {
 		this.foto = foto;
 	}
+
+
 }
